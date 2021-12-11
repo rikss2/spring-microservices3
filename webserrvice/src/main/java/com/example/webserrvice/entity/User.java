@@ -27,6 +27,9 @@ public class User {
     @Column(nullable = true)
     private String secret = null;
 
+    @Column
+    private String email;
+
     public String getPassword() {
         return password;
     }
@@ -64,5 +67,13 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
