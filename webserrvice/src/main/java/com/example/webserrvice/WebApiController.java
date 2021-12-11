@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class WebApiController {
 
     @Autowired
@@ -33,9 +34,9 @@ public class WebApiController {
         }
     }
 
-    @DeleteMapping("/user/{userName}")
-    public void deleteUser(@PathVariable String userName) {
-        userService.deleteUser(userName);
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
     }
 
     @PostMapping("/user")
