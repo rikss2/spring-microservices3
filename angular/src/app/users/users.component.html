@@ -1,0 +1,66 @@
+<div class="container">
+  <h2 class="py-2">Users</h2>
+
+  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
+
+    <ng-container matColumnDef="id">
+      <th *matHeaderCellDef mat-header-cell> ID</th>
+      <td *matCellDef="let element" mat-cell> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <th *matHeaderCellDef mat-header-cell> Name</th>
+      <td *matCellDef="let element" mat-cell> {{element.username}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th *matHeaderCellDef mat-header-cell> Email</th>
+      <td *matCellDef="let element" mat-cell> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="password">
+      <th *matHeaderCellDef mat-header-cell> Password</th>
+      <td *matCellDef="let element" mat-cell> {{element.password}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="editButton">
+      <th *matHeaderCellDef mat-header-cell>Select</th>
+      <td *matCellDef="let element" mat-cell>
+        <button (click)="editUser(element)" class="btn btn-sm btn-outline-primary" type="button">Edit</button>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+
+  <ng-container *ngIf="userForm">
+    <h2 class="py-2">Edit User</h2>
+    <form [formGroup]="userForm">
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="username">Username</label>
+        <div class="col-sm-6">
+          <input class="form-control" formControlName="username" id="username" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="email">E-mail</label>
+        <div class="col-sm-6">
+          <input class="form-control" formControlName="email" id="email" type="text">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="password">Password</label>
+        <div class="col-sm-3">
+          <input class="form-control" formControlName="password" id="password" type="number">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4 offset-sm-2">
+          <button (click)="save()" class="btn btn-primary mr-2" type="submit">Save</button>
+          <button (click)="cancel()" class="btn btn-outline-primary" type="reset">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>
