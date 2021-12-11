@@ -24,7 +24,7 @@ public class WebApiController {
         newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(passwd);
-        newUser.addRole(Role.ROLE_CLIENT);
+        newUser.getRoles().add(Role.ROLE_CLIENT);
         try {
             return userService.signup(newUser);
         } catch (Exception e) {

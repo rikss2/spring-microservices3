@@ -5,14 +5,14 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Entity
 public class User {
 
+    @Column(updatable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
     @Column(unique = true, nullable = false)
@@ -25,20 +25,12 @@ public class User {
     private List<Role> roles;
 
     @Column(nullable = true)
-    private String key = null;
-
-    void createRoleList(){
-        if (this.roles == null ) roles = new ArrayList<Role>();
-    }
+    private String secret = null;
 
     public String getPassword() {
         return password;
     }
 
-    public List<Role> getRoles() {
-        createRoleList();
-        return roles;
-    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -52,17 +44,25 @@ public class User {
         return username;
     }
 
-    public void addRole(Role role) {
-        createRoleList();
-        this.roles.add(role);
+
+    public Optional<String> getSecret() {
+        return Optional.ofNullable(secret);
     }
 
-
-    public Optional<String> getKey() {
-        return Optional.ofNullable(key);
+    public void generateSecret() {
+        this.secret = "123456";
     }
 
-    public void generateKey(){
-        this.key= "123456";
+    public int getId() {
+        return id;
+    }
+
+    public List<Role> getRoles() {
+        if (roles == null) roles = new ArrayList<>();
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
