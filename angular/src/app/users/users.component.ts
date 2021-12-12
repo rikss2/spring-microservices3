@@ -11,7 +11,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 export class UsersComponent {
   displayedColumns: string[] = ["id", 'username', 'email', 'password', 'editButton'];
   dataSource!: User[];
-  userForm!: FormGroup;
+  userForm?: FormGroup;
+  editableUserId?: Number;
 
   constructor(private userService: UserService) {
 
@@ -20,7 +21,9 @@ export class UsersComponent {
     });
   }
 
-  editUser(user: User) {
+  addUser() {
+    this.editableUserId = undefined;
+    let user = new User();
     this.userForm = new FormGroup({
       username: new FormControl(user.username),
       email: new FormControl(user.email),
@@ -28,12 +31,36 @@ export class UsersComponent {
     })
   }
 
-  cancel() {
+  editUser(user: User) {
+    this.editableUserId = user.id;
+    this.userForm = new FormGroup({
+      username: new FormControl(user.username),
+      email: new FormControl(user.email),
+      password: new FormControl(user.password)
+    });
+  }
 
+  cancel() {
+    this.editableUserId = undefined;
+    this.userForm = undefined;
   }
 
   save() {
+    if (!this.editableUserId) {
+      this.userForm = undefined;
+      return;
+    }
 
+    let id = this.userForm?.value.id;
+    console.log(id);
+
+    this.userForm = undefined;
+    this.editableUserId = undefined;
   }
+
+  deleteUser(id: Number) {
+    this.userService.deleteUser(id).subscribe(data => console.log(data));
+  }
+
 }
 

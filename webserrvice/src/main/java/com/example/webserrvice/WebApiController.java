@@ -19,6 +19,11 @@ public class WebApiController {
         return userService.getUserList();
     }
 
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable int id) {
+        return userService.getUserById(id);
+    }
+
     @PostMapping("/signup")
     public String signup(@RequestParam String username, @RequestParam String passwd) {
         User newUser;
@@ -35,8 +40,8 @@ public class WebApiController {
     }
 
     @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
+    public boolean deleteUser(@PathVariable int id) {
+        return userService.deleteUser(id);
     }
 
     @PostMapping("/user")

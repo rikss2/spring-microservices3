@@ -22,15 +22,15 @@ export class UserService {
     return this.http.post(`${this.baseUrl}` + 'user', user);
   }
 
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/user/${id}`);
+  deleteUser(id: Number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}` + 'user/' + id, {responseType: 'text'});
   }
 
-  getUser(id: number): Observable<Object> {
-    return this.http.get(`${this.baseUrl}/user/${id}`);
+  getUser(id: Number): Observable<Object> {
+    return this.http.get(`${this.baseUrl}` + 'user/' + id);
   }
 
   updateUser(user: User): Observable<Object> {
-    return this.http.post(`${this.baseUrl}/user`, user);
+    return this.http.post(`${this.baseUrl}` + 'user', user);
   }
 }

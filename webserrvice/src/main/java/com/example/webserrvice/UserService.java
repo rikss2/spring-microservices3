@@ -27,13 +27,23 @@ public class UserService {
         }
     }
 
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
+    public boolean deleteUser(int id) {
+        try {
+            userRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Transactional()
     public void updateUser(User user) {
         user.generateSecret();
         userRepository.save(user);
+    }
+
+    public User getUserById(int id) {
+        return userRepository.findById(id).orElseThrow();
     }
 }
