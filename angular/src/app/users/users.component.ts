@@ -44,5 +44,20 @@ export class UsersComponent implements OnInit {
   }
 
 
-}
+  handleclick(user: User) {
+    if (user.id == this.selectedUser.id) {
+      this.selectedUser = {};
+      return;
+    }
+    this.selectUser(user)
+  }
 
+  isSelected(user: User): boolean {
+    if (user.id == this.selectedUser.id) {
+      return true;
+    }
+    return false;
+  }
+
+
+}

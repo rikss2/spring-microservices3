@@ -24,10 +24,10 @@
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr (click)="selectUser(row)"
+    <tr (click)="handleclick(row)"
         *matRowDef="let row;
         columns: displayedColumns;"
-        [class.selected]="(selectedUser != undefined) && row.id == selectedUser.id"
+        [class.selected]="isSelected(row)"
         mat-row
     ></tr>
   </table>
