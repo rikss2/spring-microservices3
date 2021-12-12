@@ -11,7 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
 import {UserdetailsComponent} from './userdetails/userdetails.component';
 import {LoginComponent} from './login/login.component';
-import {AppService} from "./app.service";
+import {UserService} from "./user.service";
 
 
 @NgModule({
@@ -31,7 +31,7 @@ import {AppService} from "./app.service";
     MatCardModule,
     FormsModule
   ],
-  providers: [AppService],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

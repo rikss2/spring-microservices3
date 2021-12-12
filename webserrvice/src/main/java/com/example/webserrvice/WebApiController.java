@@ -3,11 +3,13 @@ package com.example.webserrvice;
 import com.example.webserrvice.entity.Role;
 import com.example.webserrvice.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -43,6 +45,14 @@ public class WebApiController {
             e.printStackTrace();
             return "Unsuccessful";
         }
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> credentials) {
+        User user = userService.getUserByUsername(credentials.get("username"));
+        if (user.getPassword().equals(passwordEncoder().encode(credentials.get("password")))) {
+            return user.getUsername();
+        } else throw new BadCredentialsException("Invalid password");
     }
 
     @DeleteMapping("/user/{id}")
