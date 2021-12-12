@@ -10,27 +10,28 @@ export class UserService {
 
   private baseUrl = 'http://localhost:8080/';
 
-  constructor(
-    private http: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
-  getUserList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}` + 'userlist');
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}` + 'userlist');
   }
 
-  createUser(user: User): Observable<any> {
-    return this.http.post(`${this.baseUrl}` + 'user', user);
-  }
-
-  deleteUser(id: Number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}` + 'user/' + id, {responseType: 'text'});
-  }
-
-  getUser(id: Number): Observable<Object> {
+  get(id: Number): Observable<User> {
     return this.http.get(`${this.baseUrl}` + 'user/' + id);
   }
 
-  updateUser(user: User): Observable<Object> {
+  create(user: User): Observable<any> {
     return this.http.post(`${this.baseUrl}` + 'user', user);
   }
+
+  update(user: User): Observable<any> {
+    return this.http.post(`${this.baseUrl}` + 'user', user);
+  }
+
+  delete(id: Number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}` + 'user/' + id);
+  }
+
+
 }

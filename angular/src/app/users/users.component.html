@@ -1,7 +1,7 @@
 <div>
   <h1 matCardTitle>Users</h1>
 
-  <table [dataSource]="dataSource" class="mat-table mat-card" mat-table>
+  <table *ngIf="dataSource" [dataSource]="dataSource" class="mat-table mat-card" mat-table>
 
     <ng-container matColumnDef="id">
       <th *matHeaderCellDef mat-header-cell> ID</th>
@@ -23,48 +23,19 @@
       <td *matCellDef="let element" mat-cell> {{element.password}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="editButton">
-      <th *matHeaderCellDef mat-header-cell>
-        Options
-        <button (click)="addUser()" class="mat-button" type="button">Add</button>
-      </th>
-      <td *matCellDef="let element" mat-cell>
-        <button (click)="editUser(element)" class="mat-button" type="button">Edit</button>
-        <button (click)="deleteUser(element)" class="mat-button" type="button">Delete</button>
-      </td>
-    </ng-container>
-
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    <tr (click)="selectUser(row)"
+        *matRowDef="let row;
+        columns: displayedColumns;"
+        [class.selected]="(selectedUser != undefined) && row.id == selectedUser.id"
+        mat-row
+    ></tr>
   </table>
+  <div class="col-md-6">
+    <app-userdetails (reqRefresh)='refresh()'
+                     [selectedUser]="selectedUser"
+                     class="mat-card"
+    ></app-userdetails>
+  </div>
 
-  <ng-container *ngIf="userForm" class="mat-card">
-    <h2 class="mat-card-title">Edit User</h2>
-    <form [formGroup]="userForm" class="mat-card-content">
-      <div class="mat-form-field-wrapper">
-        <label class="mat-form-field-label" for="username">Username</label>
-        <div>
-          <input class="mat-form-field" formControlName="username" id="username" type="text">
-        </div>
-      </div>
-      <div class="mat-form-field-wrapper">
-        <label class="mat-form-field-label" for="email">E-mail</label>
-        <div>
-          <input class="mat-form-field" formControlName="email" id="email" type="text">
-        </div>
-      </div>
-      <div class="mat-form-field-wrapper">
-        <label class="mat-form-field-label" for="password">Password</label>
-        <div>
-          <input class="mat-form-field" formControlName="password" id="password" type="number">
-        </div>
-      </div>
-      <div class="mat-form-field-wrapper">
-        <div>
-          <button (click)="save()" class="mat-button" type="submit">Save</button>
-          <button (click)="cancel()" class="mat-button" type="reset">Cancel</button>
-        </div>
-      </div>
-    </form>
-  </ng-container>
 </div>

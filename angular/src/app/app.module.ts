@@ -6,15 +6,17 @@ import {AppComponent} from './app.component';
 import {UsersComponent} from './users/users.component';
 import {MatTableModule} from "@angular/material/table";
 import {HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
+import {UserdetailsComponent} from './userdetails/userdetails.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    UsersComponent
+    UsersComponent,
+    UserdetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +25,8 @@ import {MatCardModule} from "@angular/material/card";
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatCardModule
+    MatCardModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

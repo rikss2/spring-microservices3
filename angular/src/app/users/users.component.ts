@@ -1,66 +1,48 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../user";
 import {UserService} from "../user.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-users',
   styleUrls: ['users.component.css'],
   templateUrl: 'users.component.html'
 })
-export class UsersComponent {
-  displayedColumns: string[] = ["id", 'username', 'email', 'password', 'editButton'];
-  dataSource!: User[];
-  userForm?: FormGroup;
-  editableUserId?: Number;
+export class UsersComponent implements OnInit {
+  displayedColumns: string[] = ["id", 'username', 'email', 'password'];
+  dataSource?: User[];
+  selectedUser: User = {};
 
-  constructor(private userService: UserService) {
-
-    userService.getUserList().subscribe(data => {
-      this.dataSource = data
-    });
+  constructor(private userService: UserService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
-  addUser() {
-    this.editableUserId = undefined;
-    let user = new User();
-    this.userForm = new FormGroup({
-      username: new FormControl(user.username),
-      email: new FormControl(user.email),
-      password: new FormControl(user.password)
-    })
+  ngOnInit(): void {
+    this.retrive();
   }
 
-  editUser(user: User) {
-    this.editableUserId = user.id;
-    this.userForm = new FormGroup({
-      username: new FormControl(user.username),
-      email: new FormControl(user.email),
-      password: new FormControl(user.password)
-    });
+  retrive(): void {
+    this.userService.getAll()
+      .subscribe({
+        next: (data) => {
+          this.dataSource = data
+        },
+        error: (e) => console.error(e)
+      });
   }
 
-  cancel() {
-    this.editableUserId = undefined;
-    this.userForm = undefined;
+  refresh(): void {
+    this.retrive();
+    this.selectedUser = {};
   }
 
-  save() {
-    if (!this.editableUserId) {
-      this.userForm = undefined;
-      return;
-    }
-
-    let id = this.userForm?.value.id;
-    console.log(id);
-
-    this.userForm = undefined;
-    this.editableUserId = undefined;
+  selectUser(user: User): void {
+    this.refresh();
+    console.log(user.id);
+    this.selectedUser = user;
   }
 
-  deleteUser(id: Number) {
-    this.userService.deleteUser(id).subscribe(data => console.log(data));
-  }
 
 }
 
