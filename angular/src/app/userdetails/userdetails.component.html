@@ -1,0 +1,55 @@
+<div>
+  <div *ngIf="selectedUser.id" class="edit-form">
+    <h2>Editor</h2>
+    <form>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          [(ngModel)]="selectedUser.username"
+          class="form-control"
+          id="username"
+          name="title"
+          type="text"/>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          [(ngModel)]="selectedUser.password"
+          class="form-control"
+          id="password"
+          name="description"
+          type="password"/>
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input
+          [(ngModel)]="selectedUser.email"
+          class="form-control"
+          id="email"
+          name="description"
+          type="text"/>
+      </div>
+
+    </form>
+
+    <button (click)="deleteUser()" class="badge badge-danger mr-2">
+      Delete
+    </button>
+
+    <button
+      (click)="updateUser()"
+      class="badge badge-success mb-2"
+      type="submit"
+    >
+      Update
+    </button>
+  </div>
+
+  <div *ngIf="!selectedUser.id">
+    <br/>
+    <p>Select a user!</p>
+    <button (click)="newUser()" class="badge badge-danger mr-2">
+      Create User
+    </button>
+  </div>
+</div>
