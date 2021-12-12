@@ -1,8 +1,9 @@
-package com.example.webserrvice;
+package com.example.webserrvice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,11 +18,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     SecurityUserDetailsService userDetailsService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
@@ -30,9 +26,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        // Entry points
+        http.authorizeRequests()
+                .antMatchers("**/login").permitAll();
+        // Disallow everything else..
+        //.anyRequest().authenticated();
 
-        http.httpBasic().and()
-                .authorizeRequests().anyRequest().authenticated()
-                .and().csrf().disable();
+
+        // Disable CSRF (cross site request forgery)
+        http.csrf().disable();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(4);
     }
 }

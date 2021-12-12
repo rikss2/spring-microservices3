@@ -1,4 +1,4 @@
-package com.example.webserrvice;
+package com.example.webserrvice.security;
 
 import com.example.webserrvice.entity.User;
 import com.example.webserrvice.repos.UserRepository;
@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
@@ -19,9 +17,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) throw new UsernameNotFoundException("No such user");
-        return user.get();
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No such user"));
     }
 
     public void createUser(UserDetails user) {

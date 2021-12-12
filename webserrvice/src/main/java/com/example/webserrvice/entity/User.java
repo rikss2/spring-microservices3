@@ -33,6 +33,22 @@ public class User implements UserDetails {
     @Column
     private String email;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User(int id, String username, String password, Set<Role> authorities, String secret, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+        this.secret = secret;
+        this.email = email;
+    }
+
+    protected User() {
+    }
 
     @Override
     public Set<? extends GrantedAuthority> getAuthorities() {
