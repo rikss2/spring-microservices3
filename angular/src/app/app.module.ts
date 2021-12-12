@@ -10,13 +10,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCardModule} from "@angular/material/card";
 import {UserdetailsComponent} from './userdetails/userdetails.component';
+import {LoginComponent} from './login/login.component';
+import {AppService} from "./app.service";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UsersComponent,
-    UserdetailsComponent
+    UserdetailsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import {UserdetailsComponent} from './userdetails/userdetails.component';
     MatCardModule,
     FormsModule
   ],
-  providers: [],
+  providers: [AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

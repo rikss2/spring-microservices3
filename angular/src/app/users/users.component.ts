@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../user";
 import {UserService} from "../user.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {AppService} from "../app.service";
 
 @Component({
   selector: 'app-users',
@@ -15,7 +17,13 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private app: AppService,
+              private http: HttpClient) {
+  }
+
+  authenticated() {
+    return this.app.authenticated;
   }
 
   ngOnInit(): void {

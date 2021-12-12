@@ -1,13 +1,16 @@
 package com.example.webserrvice.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Column(updatable = false)
     @Id
@@ -22,13 +25,20 @@ public class User {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Role> roles;
+    private Set<Role> authorities;
 
     @Column(nullable = true)
     private String secret = null;
 
     @Column
     private String email;
+
+
+    @Override
+    public Set<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null) authorities = new HashSet<>();
+        return authorities;
+    }
 
     public String getPassword() {
         return password;
@@ -47,6 +57,25 @@ public class User {
         return username;
     }
 
+    public void setAuthorities(Set<Role> roles) {
+        this.authorities = roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
 
     public Optional<String> getSecret() {
         return Optional.ofNullable(secret);
@@ -60,13 +89,9 @@ public class User {
         return id;
     }
 
-    public List<Role> getRoles() {
-        if (roles == null) roles = new ArrayList<>();
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public String getEmail() {
@@ -75,5 +100,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void addAuthorities(Role role) {
+        if (authorities == null) authorities = new HashSet<>();
+        authorities.add(role);
     }
 }

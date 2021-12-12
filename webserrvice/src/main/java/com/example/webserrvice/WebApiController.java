@@ -3,6 +3,8 @@ package com.example.webserrvice;
 import com.example.webserrvice.entity.Role;
 import com.example.webserrvice.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,10 @@ public class WebApiController {
 
     @Autowired
     UserService userService;
+
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @GetMapping("/userlist")
     public List<User> getUsers() {
@@ -29,8 +35,8 @@ public class WebApiController {
         User newUser;
         newUser = new User();
         newUser.setUsername(username);
-        newUser.setPassword(passwd);
-        newUser.getRoles().add(Role.ROLE_CLIENT);
+        newUser.setPassword(passwordEncoder().encode(passwd));
+        newUser.addAuthorities(Role.ROLE_USER);
         try {
             return userService.signup(newUser);
         } catch (Exception e) {
