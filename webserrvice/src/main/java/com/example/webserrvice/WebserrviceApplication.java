@@ -16,12 +16,13 @@ public class WebserrviceApplication {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
+        WebMvcConfigurerAdapter webMvcConfigurerAdapter = new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/user*").allowedOrigins("http://localhost:4200");
                 registry.addMapping("/login").allowedOrigins("http://localhost:4200");
             }
         };
+        return webMvcConfigurerAdapter;
     }
 }

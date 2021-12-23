@@ -1,11 +1,13 @@
 package com.example.webserrvice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,13 +23,15 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
 
+
     @Size(min = 8, message = "Minimum password length: 8 characters")
+    @JsonIgnore
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> authorities;
 
-    @Column(nullable = true)
+    @Column()
     private String secret = null;
 
     @Column
@@ -38,22 +42,15 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public User(int id, String username, String password, Set<Role> authorities, String secret, String email) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
-        this.secret = secret;
-        this.email = email;
-    }
-
     protected User() {
     }
 
     @Override
-    public Set<? extends GrantedAuthority> getAuthorities() {
+    public List<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) authorities = new HashSet<>();
-        return authorities;
+        return authorities.stream().toList();
+
+
     }
 
     public String getPassword() {
