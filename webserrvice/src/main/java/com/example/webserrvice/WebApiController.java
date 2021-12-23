@@ -19,6 +19,7 @@ public class WebApiController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/userlist")
+    @CrossOrigin("*")
     public List<User> getUsers() {
         return userService.getUserList();
     }
@@ -34,8 +35,8 @@ public class WebApiController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid CredentialDTO credentials) {
-        return userService.login(credentials.getUsername(), credentials.getPassword()).orElseThrow(() -> new BadCredentialsException("Invalid username or password"));
+    public TokenDTO login(@RequestBody @Valid CredentialDTO credentials) {
+        return new TokenDTO(userService.login(credentials.getUsername(), credentials.getPassword()).orElseThrow(() -> new BadCredentialsException("Invalid username or password")));
     }
 
     @DeleteMapping("/user")

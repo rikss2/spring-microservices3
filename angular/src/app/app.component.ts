@@ -13,12 +13,10 @@ export class AppComponent {
   title = 'angular';
 
   constructor(private userService: UserService, private http: HttpClient, private router: Router) {
-    this.userService.authenticate(undefined, undefined);
   }
 
   logout() {
     this.http.post('localhost:4200/api/logout', {}).subscribe(() => {
-      this.userService.authenticated = false;
       this.router.navigateByUrl('localhost:4200/api/login');
     });
   }

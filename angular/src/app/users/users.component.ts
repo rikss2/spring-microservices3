@@ -20,10 +20,6 @@ export class UsersComponent implements OnInit {
               private http: HttpClient) {
   }
 
-  authenticated() {
-    return this.userService.authenticated;
-  }
-
   ngOnInit(): void {
     this.retrive();
   }

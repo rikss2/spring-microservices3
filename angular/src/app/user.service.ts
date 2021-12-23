@@ -2,57 +2,58 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "./user";
+import {credentialDTO} from "./CredentialDTO";
+import {TokenDTO} from "./TokenDTO";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  authenticated = false;
-
   constructor(private http: HttpClient) {
   }
 
   headers?: HttpHeaders;
-  private baseUrl = 'localhost:4200/api/';
+  private baseUrl = 'http://localhost:8080/';
 
-  authenticate(credentials?: { username: string; password: string; }, callback?: () => any) {
-    console.log(credentials);
-    this.headers = new HttpHeaders(credentials ? {
-      authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
-    } : {});
+  authenticate(credentials: credentialDTO) {
+    this.login(credentials).subscribe((tokenDTO: TokenDTO) => {
 
-    this.http.get('localhost:4200/api/login', {headers: this.headers}).subscribe(response => {
-      if (response == 200) {
-        this.authenticated = true;
-      } else {
-        this.authenticated = false;
+      if (tokenDTO.token != null) {
+        console.log("login successful, response:" + tokenDTO.token);
+        this.headers = new HttpHeaders({'Authorization': "Bearer " + tokenDTO.token});
+        console.log(this.headers);
       }
-      return callback && callback();
-    });
+    })
+  }
 
+  login(credentials: credentialDTO): Observable<TokenDTO> {
+    let token = this.http.post<TokenDTO>(this.baseUrl + 'login', credentials);
+    return token;
   }
 
   getAll(): Observable<User[]> {
-    console.log(`${this.baseUrl}` + 'userlist');
-    console.log(this.headers);
-    return this.http.get<User[]>(`${this.baseUrl}` + 'userlist');
+
+
+    return this.http.get<User[]>(this.baseUrl + 'userlist', {headers: this.headers})
+
   }
 
   get(id: Number): Observable<User> {
-    return this.http.get(`${this.baseUrl}` + 'user/' + id, {headers: this.headers});
+    return this.http.get(this.baseUrl + 'user' + id, {headers: this.headers});
   }
 
   create(user: User): Observable<any> {
-    return this.http.post(`${this.baseUrl}` + 'user', user, {headers: this.headers});
+    return this.http.post(this.baseUrl + 'user', user, {headers: this.headers});
   }
 
   update(user: User): Observable<any> {
-    return this.http.post(`${this.baseUrl}` + 'user', user, {headers: this.headers});
+    return this.http.post(this.baseUrl + 'user', user, {headers: this.headers});
   }
 
   delete(id: Number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}` + 'user/' + id, {headers: this.headers});
+    return this.http.delete(this.baseUrl + 'user' + id, {headers: this.headers});
   }
 
 
